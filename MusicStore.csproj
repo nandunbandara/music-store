@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -153,12 +156,15 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\ArtistsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DB\ApplicationDbContext.cs" />
+    <Compile Include="DTOs\AlbumDTO.cs" />
+    <Compile Include="DTOs\ArtistDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -173,6 +179,10 @@
     <Compile Include="Migrations\201802111838320_AlbumModelChanges.cs" />
     <Compile Include="Migrations\201802111838320_AlbumModelChanges.Designer.cs">
       <DependentUpon>201802111838320_AlbumModelChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802120220479_AddedArtistIdInArtistModel.cs" />
+    <Compile Include="Migrations\201802120220479_AddedArtistIdInArtistModel.Designer.cs">
+      <DependentUpon>201802120220479_AddedArtistIdInArtistModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Album.cs" />
@@ -235,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802111838320_AlbumModelChanges.resx">
       <DependentUpon>201802111838320_AlbumModelChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802120220479_AddedArtistIdInArtistModel.resx">
+      <DependentUpon>201802120220479_AddedArtistIdInArtistModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

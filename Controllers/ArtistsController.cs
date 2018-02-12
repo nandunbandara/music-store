@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using MusicStore.Models;
 using MusicStore.DB;
+using MusicStore.DTOs;
+using AutoMapper;
 
 namespace MusicStore.Controllers
 {
@@ -18,26 +20,28 @@ namespace MusicStore.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public IEnumerable<Artist> GetArtists()
+        public IEnumerable<ArtistDTO> GetArtists()
         {
-            return _context.Artists.ToList(); 
+            return _context.Artists.ToList().Select(Mapper.Map<Artist, ArtistDTO>);
         }
 
-        public Artist GetArtist(int id)
+        public ArtistDTO GetArtist(int id)
         {
             var artist = _context.Artists.SingleOrDefault(c => c.Id == id);
 
             if (artist == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return artist;
+            return Mapper.Map<Artist, ArtistDTO>(artist);
         }
 
         [HttpPost]
-        public Artist AddArtist(Artist artist)
+        public Artist AddArtist(ArtistDTO artistDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
+
+            var artist = Mapper.Map<ArtistDTO, Artist>(artistDto);
 
             _context.Artists.Add(artist);
             _context.SaveChanges();
@@ -46,12 +50,14 @@ namespace MusicStore.Controllers
         }
 
         [HttpPut]
-        public void UpdateArtist(int id, Artist artist)
+        public void UpdateArtist(int id, ArtistDTO artistDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             var artistInDb = _context.Artists.SingleOrDefault(c => c.Id == id);
+
+            var artist = Mapper.Map<ArtistDTO, Artist>(artistDto);
 
             artistInDb.Name = artist.Name;
 
