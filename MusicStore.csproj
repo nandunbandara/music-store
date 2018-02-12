@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201802111808485_ArtistsAndAlbumsAdded.Designer.cs">
       <DependentUpon>201802111808485_ArtistsAndAlbumsAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802111838320_AlbumModelChanges.cs" />
+    <Compile Include="Migrations\201802111838320_AlbumModelChanges.Designer.cs">
+      <DependentUpon>201802111838320_AlbumModelChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
@@ -228,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802111808485_ArtistsAndAlbumsAdded.resx">
       <DependentUpon>201802111808485_ArtistsAndAlbumsAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802111838320_AlbumModelChanges.resx">
+      <DependentUpon>201802111838320_AlbumModelChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

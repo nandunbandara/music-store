@@ -10,10 +10,10 @@ namespace MusicStore.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public DateTime Released { get; set; }
-        public string genre { get; set; }
-        public List<string> label { get; set; }
-        public string length { get; set; }
-        public int recorded { get; set; }
+        public string Genre { get; set; }
+        public List<string> Label { get; set; }
+        public string Length { get; set; }
+        public int Recorded { get; set; }
         public Artist Artist { get; set; }
     }
 }
