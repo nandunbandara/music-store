@@ -36,7 +36,7 @@ namespace MusicStore.Controllers
         }
 
         [HttpPost]
-        public Artist AddArtist(ArtistDTO artistDto)
+        public ArtistDTO AddArtist(ArtistDTO artistDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -46,7 +46,7 @@ namespace MusicStore.Controllers
             _context.Artists.Add(artist);
             _context.SaveChanges();
 
-            return artist;
+            return Mapper.Map<Artist, ArtistDTO>(artist);
         }
 
         [HttpPut]
@@ -57,9 +57,7 @@ namespace MusicStore.Controllers
 
             var artistInDb = _context.Artists.SingleOrDefault(c => c.Id == id);
 
-            var artist = Mapper.Map<ArtistDTO, Artist>(artistDto);
-
-            artistInDb.Name = artist.Name;
+            Mapper.Map<ArtistDTO, Artist>(artistDto, artistInDb);
 
             _context.SaveChanges();
 

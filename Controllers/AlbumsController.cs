@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using MusicStore.DB;
 using MusicStore.Models;
+using MusicStore.DTOs;
+using AutoMapper;
 
 namespace MusicStore.Controllers
 {
@@ -18,47 +20,44 @@ namespace MusicStore.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public IEnumerable<Album> GetAlbums()
+        public IEnumerable<AlbumDTO> GetAlbums()
         {
-            return _context.Albums.ToList();
+            return _context.Albums.ToList().Select(Mapper.Map<Album, AlbumDTO>);
         }
 
-        public Album GetAlbum(int id)
+        public AlbumDTO GetAlbum(int id)
         {
             var album = _context.Albums.SingleOrDefault(c => c.Id == id);
 
             if (album == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return album;
+            return Mapper.Map<Album, AlbumDTO>(album);
         }
 
         [HttpPost]
-        public Album CreateAlbum(Album album)
+        public AlbumDTO CreateAlbum(AlbumDTO albumDTO)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
+            var album = Mapper.Map<AlbumDTO, Album>(albumDTO);
+
             _context.Albums.Add(album);
             _context.SaveChanges();
 
-            return album;
+            return Mapper.Map<Album, AlbumDTO>(album);
         }
 
         [HttpPut]
-        public void UpdateAlbum(int id, Album album)
+        public void UpdateAlbum(int id, AlbumDTO albumDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             var albumInDB = _context.Albums.SingleOrDefault(c => c.Id == id);
 
-            albumInDB.Title = album.Title;
-            albumInDB.Genre = album.Genre;
-            albumInDB.Label = album.Label;
-            albumInDB.Released = album.Released;
-            albumInDB.Recorded = album.Recorded;
-            albumInDB.Length = album.Length;
+            Mapper.Map<AlbumDTO, Album>(albumDto, albumInDB);
 
             _context.SaveChanges();
         }
