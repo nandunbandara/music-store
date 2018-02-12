@@ -20,58 +20,67 @@ namespace MusicStore.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public IEnumerable<ArtistDTO> GetArtists()
+        public IHttpActionResult GetArtists()
         {
-            return _context.Artists.ToList().Select(Mapper.Map<Artist, ArtistDTO>);
+            return Ok(_context.Artists.ToList().Select(Mapper.Map<Artist, ArtistDTO>));
         }
 
-        public ArtistDTO GetArtist(int id)
+        public IHttpActionResult GetArtist(int id)
         {
             var artist = _context.Artists.SingleOrDefault(c => c.Id == id);
 
             if (artist == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
 
-            return Mapper.Map<Artist, ArtistDTO>(artist);
+            return Ok(Mapper.Map<Artist, ArtistDTO>(artist));
         }
 
         [HttpPost]
-        public ArtistDTO AddArtist(ArtistDTO artistDto)
+        public IHttpActionResult AddArtist(ArtistDTO artistDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var artist = Mapper.Map<ArtistDTO, Artist>(artistDto);
 
             _context.Artists.Add(artist);
             _context.SaveChanges();
 
-            return Mapper.Map<Artist, ArtistDTO>(artist);
+            artistDto.Id = artist.Id;
+
+            return Created(new Uri(Request.RequestUri + "/" + artist.Id), artistDto);
         }
 
         [HttpPut]
-        public void UpdateArtist(int id, ArtistDTO artistDto)
+        public IHttpActionResult UpdateArtist(int id, ArtistDTO artistDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var artistInDb = _context.Artists.SingleOrDefault(c => c.Id == id);
+
+            if (artistInDb == null)
+                return NotFound();
 
             Mapper.Map<ArtistDTO, Artist>(artistDto, artistInDb);
 
             _context.SaveChanges();
 
+            return Ok();
+
         }
 
         [HttpDelete]
-        public void DeleteArtist(int id)
+        public IHttpActionResult DeleteArtist(int id)
         {
             var artist = _context.Artists.SingleOrDefault(c => c.Id == id);
 
             if (artist == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound(); ;
 
             _context.Artists.Remove(artist);
+
+            return Ok();
 
         }
     }
